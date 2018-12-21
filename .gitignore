@@ -1,0 +1,10 @@
+*.cmo
+*.cmi
+*.cmx
+*.o
+trs_parse.ml
+trs_parse.mli
+trs_lex.ml
+bntrs
+*.swp
+*.swo
