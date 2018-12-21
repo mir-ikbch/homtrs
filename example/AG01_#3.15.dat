@@ -1,0 +1,5 @@
+average(O(),O()) -> O()
+average(x,s(y)) -> average(s(x),y)
+average(s(O()),O()) -> O()
+average(s(s(O())),O()) -> s(O())
+average(s(s(s(x))),y) -> s(average(s(x),y))
