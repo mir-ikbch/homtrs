@@ -119,7 +119,9 @@ let unify ?(freez=IntSet.empty) =
 
 (* * [teq t1 t2] checks if [t1] and [t2] are alpha-equivalent *)
 let rec teq t1 t2 =
+  let m = maxid t1 in
   let v = var_set t1 in
+  let t2 = rename m t2 in
   match unify ~freez:v [t1, t2] with
   | None -> false
   | Some sbt ->
