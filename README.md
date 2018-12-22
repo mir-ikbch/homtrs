@@ -1,6 +1,7 @@
 # A Calculator of the Betti Numbers of TRSs
 
 ## Compilation
+This program requrires [Lacaml](https://github.com/mmottl/lacaml).
 ```
 $ make
 ```
