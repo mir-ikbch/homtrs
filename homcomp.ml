@@ -117,24 +117,50 @@ let unify ?(freez=IntSet.empty) =
   in
   aux (Some [])
 
+
+type ('a,'b) either = Left of 'a | Right of 'b
+
+let find_l tbl x =
+  Hashtbl.find_opt tbl (Left x)
+
+let find_r tbl x =
+  Hashtbl.find_opt tbl (Right x)
+
+exception Already_exists
+
+let add_bh tbl x y =
+  match (find_l tbl x, find_r tbl y) with
+  | (None,None) -> Hashtbl.add tbl (Left x) y; Hashtbl.add tbl (Right y) x
+  | _ -> raise Already_exists
+
 (* * [teq t1 t2] checks if [t1] and [t2] are alpha-equivalent *)
-let rec teq t1 t2 =
-  let m = maxid t1 in
-  let v = var_set t1 in
-  let t2 = rename m t2 in
-  match unify ~freez:v [t1, t2] with
-  | None -> false
-  | Some sbt ->
-      let rec aux = function
-        | [] -> true
-        | (_,Var x)::rest ->
-            if List.exists (fun (_,t) -> t = Var x) rest then
-              false
-            else
-              aux rest
-        | (_,Term _)::_ -> false
-      in
-      aux sbt
+let teq t1 t2 =
+  let mapping = Hashtbl.create 10 in
+  let rec aux = function
+    | (Var x, Var y) ->
+      begin
+        match find_l mapping x with
+        | Some z -> y = z
+        | None ->
+          try add_bh mapping x y; true
+          with Already_exists -> false
+      end
+    | (Var _,_) | (_, Var _) -> false
+    | (Term (c,ts), Term (c',ts')) ->
+      if c <> c' then
+        false
+      else
+        aux_list (ts,ts')
+  and aux_list = function
+    | ([],[]) -> true
+    | ([],_) | (_,[]) -> false
+    | (t::ts, t'::ts') ->
+      if aux (t,t') then
+        aux_list (ts,ts')
+      else
+        false
+  in
+  aux (t1,t2)
 
 let sq = Var (-1)
 
