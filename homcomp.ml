@@ -243,10 +243,10 @@ let rec crit_pairs = function
 
 let reduce t rules =
   let vs = var_set t in
+  let m = maxid t in
   let rec aux s accum = function
     | [] -> (s,accum)
     | (l,r)::rest ->
-        let m = maxid s in
         let l' = rename m l in
         let r' = rename m r in
         let ovlps = overlap_to_subterms ~freez:vs (l', r') (s, s) in
@@ -328,26 +328,31 @@ let del2 trs ((ctx1,(l1,r1),sbt1),(ctx2,(l2,r2),sbt2)) =
         (M.sub (del2' trs (subst_bctx r2 (ctx2,sbt2)))
                (del2' trs (subst_bctx r1 (ctx1,sbt1))))
 
-open Lacaml.S
+let matrix_init row col f =
+  Array.init row (fun i ->
+    Array.init col (fun j ->
+      f i j
+    )
+  )
 
 let sum_coeff trs =
   List.fold_left (fun accum (k,(ctx,_)) ->
-    float_of_int k +. accum
-  ) 0.
+    k + accum
+  ) 0
 
 let del0til trs signt =
-  Mat.init_rows 1 (List.length signt) (fun _ j ->
-    let xs = del0 (List.nth signt (j-1)) in
+  matrix_init 1 (List.length signt) (fun _ j ->
+    let xs = del0 (List.nth signt j) in
     sum_coeff trs xs
   )
 
 let del1til trs signt =
-  Mat.init_rows (List.length signt) (List.length trs) (fun i j ->
-    let xs = del1 (List.nth trs (j-1)) in
+  matrix_init  (List.length signt) (List.length trs) (fun i j ->
+    let xs = del1 (List.nth trs j) in
     let rec aux = function
-      | [] -> 0.
+      | [] -> 0
       | (coeffs,c)::rest ->
-          if List.nth signt (i-1) = c then
+          if List.nth signt i = c then
             sum_coeff trs coeffs
           else
             aux rest
@@ -357,24 +362,21 @@ let del1til trs signt =
 
 let del2til trs =
   let cps = crit_pairs trs in
-  Mat.init_rows (List.length trs) (List.length cps) (fun i j ->
-    let (_,_,p,q) = List.nth cps (j-1) in
+  matrix_init (List.length trs) (List.length cps) (fun i j ->
+    let (_,_,p,q) = List.nth cps j in
     let xs = del2 trs (p,q) in
     let rec aux = function
-      | [] -> 0.
+      | [] -> 0
       | (coeffs,(l,_))::rest ->
-          if teq l (fst (List.nth trs (i-1))) then
-            sum_coeff trs coeffs +. aux rest
+          if teq l (fst (List.nth trs i)) then
+            sum_coeff trs coeffs + aux rest
           else
             aux rest
     in
     aux xs
   )
 
-let rank mat =
-  let m = if Mat.dim1 mat > Mat.dim2 mat then Mat.dim1 mat else Mat.dim2 mat in
-  gelss mat (Mat.create m m)
-
+(*
 let rki0 trs signt =
   let mat = del0til trs signt in
   let d = Mat.dim2 mat in
@@ -400,6 +402,7 @@ let betti1 trs signt =
 let betti2 trs signt =
   let mat1 = del1til trs signt in
   Mat.dim2 mat1 - rank mat1 - rank (del2til trs)
+  *)
 
 module SS = Set.Make (struct
   type t = string * int
@@ -443,3 +446,17 @@ let rec is_var_preserving = function
     else
       false
 
+let rec gcd a b =
+  if b = 0 then a else gcd b (a mod b)
+
+let degree = 
+  let rec aux accum = function
+    | [] -> accum
+    | (l,r)::trs ->
+      let vs = var_set l in
+      let g = IntSet.fold (fun v g' -> gcd g' (abs (numoccur v l - numoccur v r))) vs accum in
+      aux g trs
+  in
+  aux 0
+
+let is_small_prime x = List.mem x [2;3;5;7]
