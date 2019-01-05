@@ -16,7 +16,7 @@ let () =
       let ri1 = M.rank (Array.length m1) (Array.length m1.(0)) m1' in
       let rk1 = Array.length m1.(0) - ri1 in
       let sh2 = rk1 - Smith.num1s (Array.length m2) (Array.length m2.(0)) m2 in
-      printf "%s\ndegree = 0\n#symbol = %d, #rule = %d, $cp = %d\ns(H2) = %d, s(H2)+s(im1) = %d\n\n"
+      printf "%s\ndegree = 0\n#symbol = %d, #rule = %d, $cp = %d\ns(H2) = %d, #rule-e(R) = %d\n\n"
              Sys.argv.(i) (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) sh2 (sh2+ri1)
     else if Homcomp.is_small_prime deg then
       let module F =
@@ -42,8 +42,8 @@ let () =
       let m0 = Array.map (Array.map F.of_int) @@ Homcomp.del0til trs signt in
       let ri0 = M.rank (Array.length m0) (Array.length m0.(0)) m0 in
       let rk0 = Array.length m0.(0) - ri0 in
-      printf "%s\ndegree = %d\n#symbol = %d, #rule = %d, #cp = %d\nrank(ker2) = %d, rank(im2) = %d, rank(ker1) = %d, rank(im1) = %d, rank(ker0) = %d, rank(im0) = %d, b2 = %d, b1 = %d, b2+rank(im1) = %d\n\n"
-                Sys.argv.(i) deg (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) rk2 ri2 rk1 ri1 rk0 ri0 (rk1 - ri2) (rk0 - ri1) (rk1 - ri2 + ri1)
+      printf "%s\ndegree = %d\n#symbol = %d, #rule = %d, #cp = %d\ndim(H2) = %d, #rule-e(R) = %d\n\n"
+                Sys.argv.(i) deg (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) (rk0 - ri1) (rk1 - ri2 + ri1)
     else
       printf "%s\ndegree = %d\nnon applicable\n\n" Sys.argv.(i) deg
   done
