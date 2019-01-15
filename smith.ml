@@ -1,4 +1,6 @@
 
+exception Err of string
+
 let swap a n m =
   if n <> m then
     let v = Array.copy a.(n) in
@@ -42,6 +44,7 @@ let reduction n m a =
           if a.(j).(j) = 0 && a.(i).(j) <> 0 then
             swap a j i
         done;
+        if j < n - 1 then begin
         for j' = j + 1 to m - 1 do
           eucl' a j j' j;
           if a.(j).(j) = 0 && a.(j).(j') <> 0 then
@@ -49,6 +52,7 @@ let reduction n m a =
         done;
         if List.exists (fun i -> a.(i).(j) <> 0) (seq (j+1) (n-1)) then
           loop ()
+        end
       in
       loop ();
       if j < min (n - 1) (m-1) then

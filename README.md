@@ -1,4 +1,4 @@
-# A Calculator of the Betti Numbers of TRSs
+# Homological Computations for TRSs
 
 ## Compilation
 This program requrires [Zarith](https://github.com/mmottl/lacaml).
@@ -8,10 +8,10 @@ $ make
 
 ## Usage
 ```
-$ ./bntrs filename
+$ ./homtrs filename
 ```
 
 ## Example
 ```
-$ ./bntrs example/AG01_#3.15.dat
+$ ./homtrs example/AG01_#3.15.dat
 ```

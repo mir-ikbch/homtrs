@@ -197,7 +197,7 @@ let isVar = function
               [r' = subst_bctx r (ctx,sbt)], [s' = subst s sbt]
    * [l] should not be a variable.
    *)
-let overlap_to_subterms ?(avoid_triv=false) ?(freez=IntSet.empty) (l, r) (t, s) =
+let overlap_to_subterms ?(avoid_triv=false) ?(avoid_top=false) ?(freez=IntSet.empty) (l, r) (t, s) =
   let m = maxid t in
   let (l,r) =
     if List.exists (fun i -> occurin i l && occurin i t) (seq 1 m) then
@@ -215,7 +215,7 @@ let overlap_to_subterms ?(avoid_triv=false) ?(freez=IntSet.empty) (l, r) (t, s) 
         match unify ~freez:freez [l, Term (c, ts)] with
         | None -> matchrec_list ctx res c [] ts
         | Some sbt ->
-            if avoid_triv && teq l t && ctx sq = sq then
+            if (avoid_triv && teq l t && ctx sq = sq) || (avoid_top && ctx sq = sq) then
               matchrec_list ctx res c [] ts
             else
               matchrec_list ctx ((subst (ctx r) sbt, subst s sbt, (ctx sq,(l,r),sbt), (sq,(t,s),sbt)) :: res) c [] ts
@@ -230,7 +230,9 @@ let overlap_to_subterms ?(avoid_triv=false) ?(freez=IntSet.empty) (l, r) (t, s) 
 let rec crit_pairs' (l, r) = function
   | [] -> []
   | (l', r')::rest ->
-      overlap_to_subterms ~avoid_triv:true (l, r) (l', r') @^ overlap_to_subterms ~avoid_triv:true (l', r') (l, r) @^ crit_pairs' (l, r) rest
+      overlap_to_subterms ~avoid_triv:true (l, r) (l', r')
+      @^ overlap_to_subterms ~avoid_triv:true ~avoid_top:true (l', r') (l, r)
+      @^ crit_pairs' (l, r) rest
 
 (* * compute critical pairs
    * input : list of rules [[(l1,r1); ...; (ln,rn)]]

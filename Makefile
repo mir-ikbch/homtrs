@@ -1,8 +1,8 @@
 .PHONY: all
-all: bntrs
+all: homtrs
 
-bntrs: freeModule.ml util.ml homcomp.ml trs_parse.mli trs_parse.ml trs_lex.ml main.ml
-	ocamlfind ocamlopt -linkpkg -package zarith freeModule.ml util.ml homcomp.ml trs_parse.mli trs_parse.ml trs_lex.ml farith.ml matrix.ml smith.ml reader.ml main.ml -o bntrs
+homtrs: freeModule.ml util.ml homcomp.ml trs_parse.mli trs_parse.ml trs_lex.ml farith.ml matrix.ml smith.ml reader.ml main.ml
+	ocamlfind ocamlopt -linkpkg -package zarith freeModule.ml util.ml homcomp.ml trs_parse.mli trs_parse.ml trs_lex.ml farith.ml matrix.ml smith.ml reader.ml main.ml -o homtrs
 
 trs_parse.mli trs_parse.ml: trs_parse.mly
 	ocamlyacc trs_parse.mly
