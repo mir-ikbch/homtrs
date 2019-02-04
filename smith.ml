@@ -40,7 +40,7 @@ let reduction n m a =
     let rec aux () = 
       let rec loop () =
         for i = j + 1 to n - 1 do
-          eucl a j i j;
+          eucl a i j j;
           if a.(j).(j) = 0 && a.(i).(j) <> 0 then
             swap a j i
         done;
