@@ -22,9 +22,9 @@ let rec eucl a i i' j =
     eucl a i' i j
 
 let rec eucl' a j j' i =
-  if a.(i).(j') <> 0 then
-    let q = a.(i).(j) / a.(i).(j') in
-    Array.iteri (fun k x -> a.(k).(j) <- x.(j) - q * a.(k).(j')) a;
+  if a.(i).(j) <> 0 then
+    let q = a.(i).(j') / a.(i).(j) in
+    Array.iteri (fun k x -> a.(k).(j') <- x.(j') - q * a.(k).(j)) a;
     eucl' a j' j i
 
 let min a b = if a < b then a else b
@@ -45,13 +45,13 @@ let reduction n m a =
             swap a j i
         done;
         if j < n - 1 then begin
-        for j' = j + 1 to m - 1 do
-          eucl' a j j' j;
-          if a.(j).(j) = 0 && a.(j).(j') <> 0 then
-            swap' a j j'
-        done;
-        if List.exists (fun i -> a.(i).(j) <> 0) (seq (j+1) (n-1)) then
-          loop ()
+          for j' = j + 1 to m - 1 do
+            eucl' a j j' j;
+            if a.(j).(j) = 0 && a.(j).(j') <> 0 then
+              swap' a j j'
+          done;
+          if List.exists (fun i -> a.(i).(j) <> 0) (seq (j+1) (n-1)) then
+            loop ()
         end
       in
       loop ();
