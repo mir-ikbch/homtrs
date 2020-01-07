@@ -1,7 +1,7 @@
 # Homological Computations for TRSs
 
 ## Compilation
-This program requrires [Zarith](https://github.com/mmottl/lacaml).
+This program requires [Zarith](https://github.com/ocaml/Zarith).
 ```
 $ make
 ```
