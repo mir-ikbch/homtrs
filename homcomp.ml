@@ -243,6 +243,17 @@ let rec crit_pairs = function
   | (l, r)::rest ->
       overlap_to_subterms ~avoid_triv:true (l, r) (l, r) @^ crit_pairs' (l, r) rest @^ crit_pairs rest
 
+let prime_crit_pairs' rules ovlps =
+  List.filter (fun (_,_,_,(ctx,(l,r),sbt)) ->
+    List.for_all (fun rule ->
+      List.for_all (fun (_,_,_,(ctx,_,_)) ->
+        ctx = Var (-1)
+      ) (overlap_to_subterms ~avoid_triv:true rule (subst l sbt, subst r sbt))
+    ) rules
+  ) ovlps
+
+let prime_crit_pairs rules = prime_crit_pairs' rules (crit_pairs rules)
+      
 let reduce t rules =
   let vs = var_set t in
   let m = maxid t in
@@ -363,7 +374,7 @@ let del1til trs signt =
   )
 
 let del2til trs =
-  let cps = crit_pairs trs in
+  let cps = prime_crit_pairs trs in
   matrix_init (List.length trs) (List.length cps) (fun i j ->
     let (_,_,p,q) = List.nth cps j in
     let xs = del2 trs (p,q) in
