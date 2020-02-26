@@ -1,4 +1,4 @@
-experiment/complete/SK90_3.15.trs
+experiment/complete//SK90_3.15.dat
 degree = 2
 #symbol = 5, #rule = 7, #cp = 12
 dim(H2) = 1, #rule-e(R) = 4

@@ -1,4 +1,4 @@
-experiment/complete/LS94_G0.trs
+experiment/complete//LS94_G0.dat
 degree = 2
 #symbol = 5, #rule = 13, #cp = 53
 dim(H2) = 1, #rule-e(R) = 4

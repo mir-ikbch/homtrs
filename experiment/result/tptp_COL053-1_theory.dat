@@ -1,0 +1,5 @@
+experiment/complete//dat_COL053-1_theory.dat
+degree = 0
+#symbol = 2, #rule = 1, #cp = 0
+s(H2) = 0, #rule-e(R) = 1
+

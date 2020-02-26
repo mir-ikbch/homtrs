@@ -1,5 +1,5 @@
-experiment/complete/SK90_3.13.trs
+experiment/complete//SK90_3.13.dat
 degree = 0
 #symbol = 5, #rule = 6, #cp = 6
-s(H2) = 0, #rule-e(R) = 1
+s(H2) = 0, #rule-e(R) = 3
 

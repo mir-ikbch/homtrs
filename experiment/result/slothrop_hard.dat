@@ -1,0 +1,5 @@
+experiment/complete//slothrop_hard.dat
+degree = 0
+#symbol = 3, #rule = 2, #cp = 0
+s(H2) = 1, #rule-e(R) = 2
+

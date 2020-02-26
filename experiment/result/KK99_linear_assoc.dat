@@ -1,5 +1,5 @@
-experiment/complete/KK99_linear_assoc.trs
+experiment/complete//KK99_linear_assoc.dat
 degree = 0
 #symbol = 2, #rule = 2, #cp = 2
-s(H2) = 0, #rule-e(R) = -1
+s(H2) = 0, #rule-e(R) = 1
 

@@ -1,4 +1,4 @@
-experiment/complete/slothrop_endo.trs
+experiment/complete//slothrop_endo.dat
 degree = 2
 #symbol = 4, #rule = 14, #cp = 69
 dim(H2) = 0, #rule-e(R) = 3

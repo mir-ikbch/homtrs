@@ -1,4 +1,4 @@
-experiment/complete/slothrop_groups_conj.trs
+experiment/complete//slothrop_groups_conj.dat
 degree = 2
 #symbol = 3, #rule = 10, #cp = 48
 dim(H2) = 0, #rule-e(R) = 2

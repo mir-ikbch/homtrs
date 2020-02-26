@@ -1,4 +1,4 @@
-experiment/complete/BGK94_D08.trs
+experiment/complete//BGK94_D08.dat
 degree = 2
 #symbol = 5, #rule = 21, #cp = 120
 dim(H2) = 2, #rule-e(R) = 5

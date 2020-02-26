@@ -1,4 +1,4 @@
-experiment/complete/Chr89_A3.trs
+experiment/complete//Chr89_A3.dat
 degree = 2
 #symbol = 7, #rule = 16, #cp = 75
 dim(H2) = 0, #rule-e(R) = 6

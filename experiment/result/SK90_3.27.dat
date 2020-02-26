@@ -1,0 +1,5 @@
+experiment/complete//SK90_3.27.dat
+degree = 0
+#symbol = 3, #rule = 3, #cp = 0
+s(H2) = 0, #rule-e(R) = 3
+
