@@ -1,4 +1,4 @@
-experiment/complete/TPTP_COL056-1_theory.tptp
+experiment/complete//dat_COL056-1_theory.dat
 degree = 0
 #symbol = 5, #rule = 3, #cp = 0
 s(H2) = 0, #rule-e(R) = 3
