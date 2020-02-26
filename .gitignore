@@ -5,6 +5,6 @@
 trs_parse.ml
 trs_parse.mli
 trs_lex.ml
-bntrs
+homtrs
 *.swp
 *.swo
