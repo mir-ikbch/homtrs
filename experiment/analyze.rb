@@ -62,7 +62,7 @@ names.each do |name|
     end
   end
 
-  # to check the validity of data
+ # to check the validity of data
   abort'degree not found' unless data[:degree]
   abort'counting rules before completion failed.' unless data[:rule_raw]
   if data[:symbol] then
@@ -72,6 +72,7 @@ names.each do |name|
     abort'neither s(H2) nor dim(H2) found' unless data[:s]
     abort'#rule-e(R) not found' unless data[:rule_eR]
   end
+  data[:rule_cmp] = num_cmp
   results[name] = data
 end
 
@@ -80,18 +81,18 @@ def puts_html_table_line(out,data)
   out.puts <<-HTML
   <td>#{data[:degree]}</td>
   <td>#{data[:rule_raw]}</td>
+  <td>#{data[:rule_cmp]}</td>
   HTML
   if data[:symbol] then
     out.puts <<-HTML
   <!-- td>#{data[:symbol]}</td -->
-  <td>#{data[:rule_cmp]}</td>
   <!-- td>#{data[:cp]}</td -->
   <td>#{data[:s]}</td>
   <td>#{data[:rule_eR]}</td>
     HTML
   else
     out.puts <<-HTML
-  <td colspan="4">N/A</td>
+  <td colspan="3">N/A</td>
     HTML
   end
 end
@@ -111,7 +112,7 @@ def output_html(results)
   <td>#rule_after - e(R)</td>
 </tr>
   HTML
-  results.each do |name,data|
+  results.sort.each do |name,data|
     out.puts <<-HTML
 <tr>
   <td><a href="#{RawURL}/#{name}.trs">#{name}</a></td>
@@ -148,7 +149,7 @@ name & degree & % \\(\\#\mathit{symbol}\\) &
 \\(\\#\\mathit{rule}_{\\mathit{after}}-e(R)\\)
   LaTeX
   first = true          
-  results.each do |name,data|
+  results.sort.each do |name,data|
     out.puts '\\\\'
     if first then out.puts '\\hline'; first = false end
     out.puts <<-LaTeX
