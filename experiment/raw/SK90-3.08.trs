@@ -1,0 +1,9 @@
+(VAR x y)
+(RULES
+*(x, \(x, y)) -> y
+\(x, *(x, y)) -> y
+/(*(x, y), y) -> x
+*(/(x, y), y) -> x
+*(x, *(y, x)) -> y
+)
+(COMMENT Example 3.12 in \cite{SK90})

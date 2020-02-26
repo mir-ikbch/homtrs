@@ -1,0 +1,8 @@
+(VAR x y)
+(RULES
+p(0) -> 0
+p(s(x)) -> x
++(x, 0) -> x
+s(+(x, p(y))) -> +(x, y)
+)
+(COMMENT Example 3.11 in \cite{SK90})

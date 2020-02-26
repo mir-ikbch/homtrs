@@ -1,0 +1,5 @@
+experiment/complete/ASK93_1.dat
+degree = 0
+#symbol = 4, #rule = 2, #cp = 0
+s(H2) = 0, #rule-e(R) = 2
+

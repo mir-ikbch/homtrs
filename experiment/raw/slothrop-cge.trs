@@ -1,0 +1,9 @@
+(VAR x y z )
+(RULES
+trans(trans(x,y), z) ->  trans(x,trans(y,z))
+trans(symm(x), x) ->   refl
+trans(refl,x) ->  x
+trans(f(x), f(y)) ->  f(trans(x,y))
+trans(f(x), g(y)) ->  trans(g(y), f(x))
+trans(g(x), g(y)) ->  g(trans(x,y))
+)

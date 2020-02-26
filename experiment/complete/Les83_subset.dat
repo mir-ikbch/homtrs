@@ -1,0 +1,13 @@
+eq(0(),0()) -> tt()
+has(empty(),x) -> ff()
+subset(empty(),x) -> tt()
+if(ff(),x,y) -> y
+if(x,y,y) -> y
+eq(0(),s(x)) -> ff()
+eq(s(x),0()) -> ff()
+if(tt(),x,y) -> x
+if(x,tt(),ff()) -> x
+eq(s(x),s(y)) -> eq(x,y)
+subset(+(x,y),u) -> if(has(u,y),subset(x,u),ff())
+has(+(x,y),u) -> if(eq(y,u),tt(),has(x,u))
+

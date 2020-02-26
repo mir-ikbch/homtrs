@@ -1,0 +1,5 @@
+experiment/complete/SK90_3.02.trs
+degree = 0
+#symbol = 2, #rule = 3, #cp = 4
+s(H2) = 1, #rule-e(R) = 0
+

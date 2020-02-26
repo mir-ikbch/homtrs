@@ -1,0 +1,5 @@
+mult(x,mult(y,x)) -> y
+\(x,y) -> mult(y,x)
+/(x,y) -> mult(y,x)
+mult(mult(x,y),x) -> y
+

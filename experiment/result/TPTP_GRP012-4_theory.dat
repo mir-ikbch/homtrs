@@ -1,0 +1,5 @@
+experiment/complete/TPTP_GRP012-4_theory.dat
+degree = 2
+#symbol = 3, #rule = 10, #cp = 48
+dim(H2) = 0, #rule-e(R) = 2
+

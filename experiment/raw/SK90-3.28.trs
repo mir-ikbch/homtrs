@@ -1,0 +1,13 @@
+(VAR x)
+(RULES
+b(u(x)) -> a(b(x))
+a(u(x)) -> x
+a(w(x)) -> c(a(x))
+c(v(x)) -> b(c(x))
+b(v(x)) -> x
+c(w(x)) -> x
+u(a(x)) -> x
+v(b(x)) -> x
+w(c(x)) -> x
+)
+(COMMENT Example 3.28 in \cite{SK90})

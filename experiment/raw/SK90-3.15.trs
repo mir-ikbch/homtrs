@@ -1,0 +1,12 @@
+(VAR x y)
+(RULES
+p(s(x)) -> x
+eq(x, x) -> true
+eq(s(x),x) -> false
+eq(x, s(x)) -> false
+eq(s(x), s(y)) -> eq(x, y)
+eq(x, p(x)) -> false
+eq(p(x), x) -> false
+eq(p(x), p(y)) -> eq(x, y)
+)
+(COMMENT Example 3.15 in \cite{SK90})

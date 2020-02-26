@@ -1,0 +1,12 @@
+(VAR x)
+(RULES
+a(x) -> c(c(c(b(c(c(x))))))
+b(c(b(x))) -> c(c(b(c(x))))
+b(c(c(b(x))))-> c(c(c(c(c(c(b(c(c(c(c(c(x))))))))))))
+b(c(c(c(b(x))))) -> c(b(c(c(c(c(x))))))
+b(b(c(c(c(b(x)))))) -> c(c(c(c(b(c(c(x)))))))
+b(c(c(c(c(c(b(x))))))) -> c(c(x))
+b(c(c(c(c(c(c(b(x)))))))) -> c(c(c(c(c(b(c(c(c(x)))))))))
+c(c(c(c(c(c(c(x))))))) -> x
+)
+(COMMENT Example 3.27 in \cite{SK90})

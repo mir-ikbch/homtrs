@@ -1,0 +1,14 @@
+(VAR x y z u v)
+(RULES
+eq(x,x) -> true
+eq(nil, end(y,z)) -> false
+eq(end(x,y), nil) -> false
+eq(end(x,y), end(u,v)) -> and(eq(y, v), eq(x, u))
+f(x, nil) -> end(nil, x)
+f(x, end(y,z)) -> end(f(x,y), z)
+.(nil, y) -> y
+.(end(x,y), z) -> .(x, f(y, z))
+null(nil) -> true
+null(end(x,y)) -> false
+)
+(COMMENT Example 3.20 in \cite{SK90})

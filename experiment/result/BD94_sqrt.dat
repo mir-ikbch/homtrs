@@ -1,0 +1,5 @@
+experiment/complete/BD94_sqrt.trs
+degree = 2
+#symbol = 4, #rule = 4, #cp = 1
+dim(H2) = 0, #rule-e(R) = 3
+

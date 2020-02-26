@@ -1,0 +1,4 @@
+cnf(associativity, axiom, ( multiply(multiply(X,Y),Z) = multiply(X,multiply(Y,Z)) )).
+cnf(left_identity, axiom, ( multiply(identity,X) = X )).
+cnf(left_inverse, axiom, ( multiply(inverse(X),X) = identity )).
+cnf(c_times_b_is_e, hypothesis, ( multiply(c,b) = identity )).

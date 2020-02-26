@@ -1,0 +1,5 @@
+(VAR x)
+(RULES
+a(b(a(a(b(x))))) -> a(x)
+)
+(COMMENT Example 3.25 in \cite{SK90})

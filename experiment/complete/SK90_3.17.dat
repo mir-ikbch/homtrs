@@ -1,0 +1,6 @@
+&(x,x) -> x
+or(x,x) -> x
+or(&(x,z),&(y,z)) -> &(or(x,y),z)
+or(&(x,y),y) -> &(or(x,y),y)
+or(x,&(y,x)) -> &(or(x,y),x)
+

@@ -1,0 +1,8 @@
+@(nil(),y) -> y
+reviter(nil(),y) -> y
+rev(y) -> reviter(y,nil())
+@(.(y,x),z) -> .(y,@(x,z))
+@(@(y,x),z) -> @(y,@(x,z))
+reviter(.(y,x),z) -> reviter(x,.(y,z))
+@(reviter(y,x),z) -> reviter(y,@(x,z))
+

@@ -1,0 +1,7 @@
+fac(0()) -> s(0())
++(x,0()) -> x
+mult(x,0()) -> 0()
++(x,s(y())) -> s(+(x,y()))
+mult(x,s(y())) -> +(mult(x,y()),x)
+fac(s(x)) -> mult(s(x),fac(x))
+

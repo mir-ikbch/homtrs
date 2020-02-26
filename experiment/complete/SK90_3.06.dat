@@ -1,0 +1,13 @@
+mult(x,mult(y,z)) -> mult(mult(x,y),z)
+g(1(),1()) -> 1()
+mult(x,1()) -> x
+mult(1(),x) -> x
+i(x) -> g(1(),x)
+g(1(),g(1(),x)) -> x
+mult(x,g(1(),x)) -> 1()
+mult(g(1(),x),x) -> 1()
+mult(mult(x,y),g(1(),y)) -> x
+mult(mult(x,g(1(),y)),y) -> x
+f(x,y) -> g(x,mult(g(1(),y),x))
+g(1(),mult(x,y)) -> mult(g(1(),y),g(1(),x))
+

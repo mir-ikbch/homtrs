@@ -1,0 +1,12 @@
+i(one()) -> one()
+i(i(x)) -> x
+mult(one(),x) -> x
+mult(x,one()) -> x
+mult(mult(x,y),z) -> mult(x,mult(y,z))
+d(x,y) -> mult(x,i(y))
+mult(i(x),x) -> one()
+mult(x,i(x)) -> one()
+i(mult(y,x)) -> mult(i(x),i(y))
+mult(i(x),mult(x,y)) -> y
+mult(x,mult(i(x),y)) -> y
+

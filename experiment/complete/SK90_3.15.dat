@@ -1,0 +1,8 @@
+p(s(x)) -> x
+eq(x,x) -> true()
+eq(x,p(x)) -> false()
+eq(p(x),x) -> false()
+eq(p(x),p(y)) -> eq(x,y)
+eq(x,s(y)) -> eq(p(x),y)
+eq(s(x),y) -> eq(x,p(y))
+

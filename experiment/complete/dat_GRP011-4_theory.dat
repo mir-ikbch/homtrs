@@ -1,0 +1,12 @@
+multiply(identity(),X) -> X
+multiply(inverse(X),X) -> identity()
+multiply(multiply(X,Y),Z) -> multiply(X,multiply(Y,Z))
+multiply(inverse(X),multiply(X,Y)) -> Y
+multiply(X,identity()) -> X
+inverse(identity()) -> identity()
+inverse(inverse(X)) -> X
+multiply(X,inverse(X)) -> identity()
+multiply(X,multiply(inverse(X),Y)) -> Y
+b() -> d()
+inverse(multiply(X,Y)) -> multiply(inverse(Y),inverse(X))
+

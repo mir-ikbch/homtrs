@@ -1,0 +1,4 @@
+response(a(),c()) -> b()
+response(a(),b()) -> c()
+response(compose(X,Y),W) -> response(X,response(Y,W))
+

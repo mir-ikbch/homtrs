@@ -1,0 +1,7 @@
+(VAR x y)
+(RULES
+f(x, h(y)) -> j(x)
+f(h(x),y) -> j(h(x))
+g(f(x,x)) -> i(x)
+)
+(COMMENT Example 3.31 in \cite{SK90})

@@ -1,0 +1,13 @@
+(VAR x y z)
+(RULES
+f(x, nil) -> g(nil,x)
+f(x, g(y, z)) -> g(f(x, y), z)
+g(g(x,y),y) -> g(x,y)
+g(cdr(g(x,y)),y) -> cdr(g(x,y))
+cons(x,nil) -> x
+cons(x,g(y,z)) -> g(cons(x, y), z)
+cdr(nil) -> nil
+cdr(g(nil,y)) -> nil
+cdr(g(g(x, y), z)) -> g(cdr(g(x, y)), z)
+)
+(COMMENT Example 3.21 in \cite{SK90})

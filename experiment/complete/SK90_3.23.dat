@@ -1,0 +1,9 @@
+b(d(x)) -> x
+d(a(x)) -> e(x)
+e(c(x)) -> a(x)
+c(e(x)) -> a(x)
+c(a(x)) -> a(c(x))
+b(e(x)) -> a(x)
+b(a(x)) -> a(c(x))
+e(a(x)) -> a(e(x))
+

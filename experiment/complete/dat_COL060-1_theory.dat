@@ -1,0 +1,3 @@
+apply(apply(t(),X),Y) -> apply(Y,X)
+apply(apply(apply(b(),X),Y),Z) -> apply(X,apply(Y,Z))
+

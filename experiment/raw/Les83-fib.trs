@@ -1,0 +1,12 @@
+(VAR x y z)
+(RULES
++(0, x) -> x
++(s(x), y) -> s(+(x, y))
++(+(x, y), z) -> +(x, +(y, z))
+fib(0) -> 0
+fib(s(0)) -> s(0)
+fib(s(s(x))) -> +(fib(x), fib(s(x)))
+dfib(0, y) -> y
+dfib(s(0), y) -> s(y)
+dfib(s(s(x)), y) -> dfib(s(x), dfib(x, y))
+)

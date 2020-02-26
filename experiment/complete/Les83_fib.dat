@@ -1,0 +1,10 @@
+fib(0()) -> 0()
++(0(),x) -> x
+fib(s(0())) -> s(0())
+dfib(0(),x) -> x
++(s(x),y) -> s(+(x,y))
+dfib(s(0()),x) -> s(x)
++(+(x,y),z) -> +(x,+(y,z))
+fib(s(s(x))) -> +(fib(x),fib(s(x)))
+dfib(s(s(x)),y) -> dfib(s(x),dfib(x,y))
+

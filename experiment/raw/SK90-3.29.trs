@@ -1,0 +1,11 @@
+(VAR x)
+(RULES
+a(c(x)) -> e(a(x))
+a(d(x)) -> v(a(x))
+b(c(x)) -> e(b(x))
+b(d(x)) -> v(b(x))
+a(u(x)) -> b(u(x))
+u(x) -> c(w(x))
+d(w(x)) -> u(x)
+)
+(COMMENT Example 3.29 in \cite{SK90})

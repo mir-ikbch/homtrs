@@ -1,0 +1,9 @@
+(VAR x y z)
+(RULES
++(+(x, y), z) -> +(x, +(y, z))
++(0, 0) -> 0
++(x, -(x)) -> 0
+f(0, y, z) -> y
+g(+(x, y), y) -> f(+(x, y), x, y)
+)
+(COMMENT Example 3.4 in \cite{SK90})

@@ -1,0 +1,5 @@
+experiment/complete/LS94_G0.trs
+degree = 2
+#symbol = 5, #rule = 13, #cp = 53
+dim(H2) = 1, #rule-e(R) = 4
+

@@ -1,0 +1,5 @@
+experiment/complete/slothrop_cge.trs
+degree = 2
+#symbol = 5, #rule = 20, #cp = 107
+dim(H2) = 0, #rule-e(R) = 4
+

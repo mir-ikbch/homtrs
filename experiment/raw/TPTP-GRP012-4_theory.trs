@@ -1,0 +1,3 @@
+cnf(right_identity, axiom, ( multiply(X,identity) = X )).
+cnf(right_inverse, axiom, ( multiply(X,inverse(X)) = identity )).
+include('Axioms/GRP004-0.ax').

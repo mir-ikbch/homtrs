@@ -1,0 +1,1 @@
+response(compose(X,Y),W) -> response(X,response(Y,W))

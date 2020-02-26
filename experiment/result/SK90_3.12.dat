@@ -1,0 +1,5 @@
+experiment/complete/SK90_3.12.trs
+degree = 2
+#symbol = 3, #rule = 9, #cp = 38
+dim(H2) = 0, #rule-e(R) = 2
+

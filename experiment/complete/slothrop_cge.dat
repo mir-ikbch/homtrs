@@ -1,0 +1,21 @@
+trans(refl(),x) -> x
+trans(symm(x),x) -> refl()
+trans(trans(x,y),z) -> trans(x,trans(y,z))
+trans(f(x),f(y)) -> f(trans(x,y))
+trans(g(x),f(y)) -> trans(f(y),g(x))
+trans(g(x),g(y)) -> g(trans(x,y))
+trans(symm(x),trans(x,y)) -> y
+trans(x,refl()) -> x
+symm(refl()) -> refl()
+symm(symm(x)) -> x
+trans(x,symm(x)) -> refl()
+trans(x,trans(symm(x),y)) -> y
+trans(f(x),trans(f(y),z)) -> trans(f(trans(x,y)),z)
+trans(g(x),trans(f(y),z)) -> trans(f(y),trans(g(x),z))
+trans(g(x),trans(g(y),z)) -> trans(g(trans(x,y)),z)
+f(refl()) -> refl()
+symm(f(x)) -> f(symm(x))
+g(refl()) -> refl()
+symm(g(x)) -> g(symm(x))
+symm(trans(x,y)) -> trans(symm(y),symm(x))
+

@@ -1,0 +1,6 @@
+add(X,inverse(X)) -> one()
+add(multiply(Y,X),multiply(Z,X)) -> multiply(X,add(Y,Z))
+add(multiply(X,inverse(X)),multiply(Y,one())) -> Y
+add(multiply(X,inverse(Y)),multiply(Y,add(X,inverse(Y)))) -> X
+add(multiply(X,inverse(Y)),multiply(X,add(X,inverse(Y)))) -> X
+

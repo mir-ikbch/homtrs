@@ -1,0 +1,19 @@
+a(b(x)) -> b(u(x))
+a(u(x)) -> x
+a(w(x)) -> c(a(x))
+b(c(x)) -> c(v(x))
+b(v(x)) -> x
+c(w(x)) -> x
+u(a(x)) -> x
+v(b(x)) -> x
+w(c(x)) -> x
+u(v(x)) -> v(a(x))
+u(b(x)) -> b(a(x))
+v(c(x)) -> c(b(x))
+v(w(x)) -> w(b(x))
+b(w(x)) -> w(v(x))
+a(v(x)) -> v(u(x))
+u(w(x)) -> c(u(x))
+u(c(x)) -> w(u(x))
+a(c(x)) -> w(a(x))
+

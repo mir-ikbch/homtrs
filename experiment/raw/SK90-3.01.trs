@@ -1,0 +1,9 @@
+(from SK 3.1)
+(VAR x y z)
+(RULES
+*(one, y) -> y
+*(i(x), x) -> one
+*(*(x, y), z) -> *(x, *(y, z))
+div(x, y) -> *(x, i(y))
+)
+(COMMENT Example 3.2 in \cite{SK90})

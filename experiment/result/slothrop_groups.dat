@@ -1,0 +1,5 @@
+experiment/complete/slothrop_groups.trs
+degree = 2
+#symbol = 3, #rule = 10, #cp = 48
+dim(H2) = 0, #rule-e(R) = 2
+

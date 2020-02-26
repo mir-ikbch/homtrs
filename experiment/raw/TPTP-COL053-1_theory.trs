@@ -1,0 +1,1 @@
+cnf(composer_exists, axiom, ( response(compose(X,Y),W) = response(X,response(Y,W)) )).

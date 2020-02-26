@@ -1,0 +1,22 @@
+f(x,e()) -> x
+f(b(),b()) -> e()
+f(b(),i(a())) -> f(a(),b())
+f(x,i(x)) -> e()
+f(f(x,y),z) -> f(x,f(y,z))
+f(b(),f(i(a()),x)) -> f(a(),f(b(),x))
+i(b()) -> b()
+i(e()) -> e()
+f(i(x),x) -> e()
+f(e(),x) -> x
+i(i(x)) -> x
+f(i(x),f(x,y)) -> y
+f(b(),a()) -> f(i(a()),b())
+f(b(),f(a(),x)) -> f(i(a()),f(b(),x))
+f(b(),f(b(),x)) -> x
+f(x,f(i(x),y)) -> y
+i(f(x,y)) -> f(i(y),i(x))
+f(a(),f(a(),a())) -> f(i(a()),i(a()))
+f(a(),f(a(),f(a(),x))) -> f(i(a()),f(i(a()),x))
+f(i(a()),f(i(a()),i(a()))) -> f(a(),a())
+f(i(a()),f(i(a()),f(i(a()),x))) -> f(a(),f(a(),x))
+

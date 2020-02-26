@@ -1,0 +1,14 @@
+(VAR z)
+(RULES
+x(w(e(f(z)))) -> x(w(e(g(z))))
+e(g(c(z))) -> d(g(c(z)))
+x(w(d(z))) -> x(w(i(z)))
+u(b(c(z))) -> o(z)
+x(w(i(g(c(z))))) -> o(z)
+x(w(a(z))) -> u(z)
+a(b(c(z))) -> e(f(c(z)))
+j(f(z)) -> z
+h(j(z)) -> w(e(z))
+y(b(z)) -> g(z)
+i(y(z)) -> a(z)
+)

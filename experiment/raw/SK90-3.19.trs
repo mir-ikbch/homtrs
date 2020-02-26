@@ -1,0 +1,13 @@
+(VAR x y z)
+(RULES
+@(nil, y) -> y
+@(.(x,y), z) -> .(x, @(y,z))
+@(@(x,y), z) -> @(x, @(y,z))
+reviter(nil, y) -> y
+reviter(.(x,y), z) -> reviter(y, .(x,z))
+rev(nil) -> nil
+rev(.(x,y)) -> @(rev(y), .(x, nil))
+@(rev(x), y) -> reviter(x, y)
+rev(x) -> reviter(x, nil)
+)
+(COMMENT Example 3.19 in \cite{SK90})

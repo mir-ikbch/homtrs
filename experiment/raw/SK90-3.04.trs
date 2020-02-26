@@ -1,0 +1,8 @@
+(VAR x y z)
+(RULES
+*(*(x, y), z) -> *(x, *(y, z))
+*(one, y) -> y
+g(x) -> *(f(x), x)
+*(g(x), y) -> y
+)
+(COMMENT Example 3.4 in \cite{SK90})

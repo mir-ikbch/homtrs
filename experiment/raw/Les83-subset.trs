@@ -1,0 +1,15 @@
+(VAR x y z u v)
+(RULES
+if(tt, x, y) -> x
+if(ff, x, y) -> y
+if(x, y, y) -> y
+if(x, tt, ff) -> x
+eq(0, 0) -> tt
+eq(0, s(x)) -> ff
+eq(s(x), 0) -> ff
+eq(s(x), s(y)) -> eq(x, y)
+has(empty, x) -> ff
+has(+(u, x), y) -> if(eq(x, y), tt, has(u, y))
+subset(empty, v) -> tt
+subset(+(u, x), v) -> if(has(v, x), subset(u, v), ff)
+)

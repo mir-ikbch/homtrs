@@ -1,0 +1,11 @@
+f(x,e()) -> x
+f(e(),x) -> x
+f(x,i(x)) -> e()
+i(e()) -> e()
+f(x,f(y,z)) -> f(f(x,y),z)
+i(f(x,y)) -> f(i(y),i(x))
+f(f(x,y),i(y)) -> x
+i(i(x)) -> x
+f(i(x),x) -> e()
+f(f(x,i(y)),y) -> x
+

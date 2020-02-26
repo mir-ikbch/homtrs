@@ -1,0 +1,5 @@
+experiment/complete/TPTP_COL060-1_theory.tptp
+degree = 0
+#symbol = 3, #rule = 2, #cp = 0
+s(H2) = 0, #rule-e(R) = 2
+

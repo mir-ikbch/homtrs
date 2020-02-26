@@ -1,0 +1,3 @@
+plus(x,z()) -> x
+plus(x,s(y)) -> s(plus(x,y))
+

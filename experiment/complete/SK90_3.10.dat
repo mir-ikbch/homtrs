@@ -1,0 +1,9 @@
+mult(x,one()) -> x
+mult(one(),x) -> x
+f(x,mult(x,y)) -> y
+f(one(),x) -> x
+f(x,x) -> one()
+g(mult(x,y),y) -> x
+g(x,x) -> one()
+g(x,one()) -> x
+

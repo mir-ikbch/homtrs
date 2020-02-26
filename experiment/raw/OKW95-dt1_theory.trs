@@ -1,0 +1,14 @@
+(VAR x y)
+(RULES
+fib(0) -> s(0)
+fib(s(0)) -> s(0)
+fib(s(s(x))) -> +(fib(s(x)),fib(x))
+dfib(0) -> s(0)
+dfib(s(0)) -> s(0)
+dfib(s(s(x))) -> +(dfib(s(x)),+(dfib(x),dfib(x)))
++(x,s(y)) -> s(+(x,y))
++(x,0) -> x
+-(s(x),s(y)) -> -(x,y)
+-(x,0) -> x
+p(x) -> -(x, s(0))
+)

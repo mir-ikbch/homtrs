@@ -1,0 +1,12 @@
+null(nil()) -> true()
+f(x,nil()) -> end(nil(),x)
+.(nil(),x) -> x
+eq(x,x) -> true()
+null(end(x,y)) -> false()
+eq(nil(),end(x,y)) -> false()
+eq(end(x,y),nil()) -> false()
+f(x,end(y,z)) -> end(f(x,y),z)
+.(end(x,y),z) -> .(x,f(y,z))
+eq(end(z,x),end(u,y)) -> and(eq(x,y),eq(z,u))
+and(true(),true()) -> true()
+

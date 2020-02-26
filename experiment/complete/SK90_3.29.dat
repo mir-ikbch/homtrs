@@ -1,0 +1,9 @@
+a(c(x)) -> e(a(x))
+a(d(x)) -> v(a(x))
+e(b(x)) -> b(c(x))
+v(b(x)) -> b(d(x))
+u(x) -> d(w(x))
+c(w(x)) -> d(w(x))
+e(a(w(x))) -> b(d(w(x)))
+v(a(w(x))) -> b(d(w(x)))
+

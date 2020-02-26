@@ -1,0 +1,7 @@
+rev(nil()) -> nil()
+@(nil(),y) -> y
+rev(rev(y)) -> y
+@(.(y,x),z) -> .(y,@(x,z))
+rev(.(y,x)) -> @(rev(x),.(y,nil()))
+rev(@(y,.(x,nil()))) -> .(x,rev(y))
+

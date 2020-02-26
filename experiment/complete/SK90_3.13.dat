@@ -1,0 +1,7 @@
+exp(0()) -> 1()
++(x,0()) -> x
+mult(x,1()) -> x
++(x,+(y,z)) -> +(+(x,y),z)
+mult(x,mult(y,z)) -> mult(mult(x,y),z)
+exp(+(x,y)) -> mult(exp(x),exp(y))
+

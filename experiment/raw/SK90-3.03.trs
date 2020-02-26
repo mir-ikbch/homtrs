@@ -1,0 +1,9 @@
+(VAR x y z)
+(RULES
+d(d(x, x), d(d(y, y), y)) -> y
+d(d(x, y), d(z, y)) -> d(x, z)
+d(x, x) -> one
+d(one, y) -> i(y)
+d(x, i(y)) -> *(x, y)
+)
+(COMMENT Example 3.3 in \cite{SK90})

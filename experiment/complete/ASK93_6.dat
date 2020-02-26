@@ -1,0 +1,12 @@
+j(f(z)) -> z
+h(j(z)) -> w(e(z))
+g(z) -> y(b(z))
+i(y(z)) -> a(z)
+x(w(d(z))) -> x(w(i(z)))
+u(z) -> x(w(a(z)))
+a(b(c(z))) -> e(f(c(z)))
+e(y(b(c(z)))) -> d(y(b(c(z))))
+w(e(f(z))) -> h(z)
+x(w(e(y(b(z))))) -> x(h(z))
+o(z) -> x(h(c(z)))
+

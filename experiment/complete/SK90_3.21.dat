@@ -1,0 +1,5 @@
+cdr(nil()) -> nil()
+cons(x,nil()) -> x
+g(x,y) -> x
+f(x,nil()) -> nil()
+

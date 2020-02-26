@@ -1,0 +1,14 @@
+mult(g(x),y) -> mult(x,y)
+mult(x,g(x)) -> g(x)
+mult(x,mult(y,z)) -> mult(x,g(y))
+g(g(x)) -> g(x)
+f(g(x)) -> g(x)
+f(f(x)) -> f(x)
+g(f(x)) -> f(x)
+mult(f(x),x) -> f(x)
+mult(x,f(y)) -> mult(x,y)
+g(mult(x,y)) -> f(y)
+f(mult(x,y)) -> g(x)
+mult(f(x),g(x)) -> x
+mult(mult(z,x),y) -> mult(f(x),y)
+
