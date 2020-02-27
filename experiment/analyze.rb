@@ -4,8 +4,8 @@ CmpDir   = 'complete'
 RawDir    = 'raw'
 ResDir = 'result'
 
-RawURL = 'https://github.com/mir-ikbch/homtrs/blob/master/experiment/raw'
-CompURL = 'https://github.com/mir-ikbch/homtrs/blob/master/experiment/complete'
+RawURL = 'https://raw.githubusercontent.com/mir-ikbch/homtrs/master/experiment/raw'
+CompURL = 'https://raw.githubusercontent.com/mir-ikbch/homtrs/master/experiment/complete'
 
 OutHtml  = 'result.html'
 OutLaTeX = 'result.tex'
