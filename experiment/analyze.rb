@@ -5,6 +5,7 @@ RawDir    = 'raw'
 ResDir = 'result'
 
 RawURL = 'https://github.com/mir-ikbch/homtrs/blob/master/experiment/raw'
+CompURL = 'https://github.com/mir-ikbch/homtrs/blob/master/experiment/complete'
 
 OutHtml  = 'result.html'
 OutLaTeX = 'result.tex'
@@ -77,11 +78,11 @@ names.each do |name|
 end
 
 # Output HTML 
-def puts_html_table_line(out,data)
+def puts_html_table_line(out,data,name)
   out.puts <<-HTML
   <td>#{data[:degree]}</td>
   <td>#{data[:rule_raw]}</td>
-  <td>#{data[:rule_cmp]}</td>
+  <td><a href="#{CompURL}/#{name}.dat">#{data[:rule_cmp]}</a></td>
   HTML
   if data[:symbol] then
     out.puts <<-HTML
@@ -92,7 +93,7 @@ def puts_html_table_line(out,data)
     HTML
   else
     out.puts <<-HTML
-  <td colspan="3">N/A</td>
+  <td colspan="2">N/A</td>
     HTML
   end
 end
@@ -100,6 +101,9 @@ end
 def output_html(results)
   out = open(OutHtml,'w')
   out.puts <<-HTML
+<html>
+<head><title>Homtrs - Experimental Results</title></head>
+<body>
 <table border="1">
 <tr>
   <td>name</td>
@@ -117,11 +121,16 @@ def output_html(results)
 <tr>
   <td><a href="#{RawURL}/#{name}.trs">#{name}</a></td>
     HTML
-    puts_html_table_line(out,data)
+    puts_html_table_line(out,data,name)
     out.puts <<-HTML
 </tr>
     HTML
   end
+  out.puts <<-HTML
+</table>
+</body>
+</html>
+  HTML
   out.close
 end
 
