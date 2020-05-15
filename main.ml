@@ -12,7 +12,6 @@ let () =
         read_file Sys.argv.(i)
     in
     print_string (Sys.argv.(i) ^ "\n");
-    printf "%d\n" (List.length trs);
     let deg = Homcomp.degree trs in
     let signt = Homcomp.signt_from_trs trs in
     let m2 = Homcomp.del2til trs in
@@ -50,8 +49,8 @@ let () =
       let m0 = Array.map (Array.map F.of_int) @@ Homcomp.del0til trs signt in
       let ri0 = M.rank (Array.length m0) (Array.length m0.(0)) m0 in
       let rk0 = Array.length m0.(0) - ri0 in
-      printf "%s\ndegree = %d\n#symbol = %d, #rule = %d, #cp = %d\ndim(H2) = %d, #rule-e(R) = %d\n\n"
-                Sys.argv.(i) deg (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) (rk0 - ri1) (rk1 - ri2 + ri1)
+      printf "degree = %d\n#symbol = %d, #rule = %d, #cp = %d\ndim(H2) = %d, #rule-e(R) = %d\n\n"
+                deg (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) (rk0 - ri1) (rk1 - ri2 + ri1)
     else
-      printf "%s\ndegree = %d\nnon applicable\n\n" Sys.argv.(i) deg
+      printf "degree = %d\nnon applicable\n\n" deg
   done
