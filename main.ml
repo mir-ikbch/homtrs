@@ -3,8 +3,16 @@ open Printf
 open Reader
 
 let () =
-  for i = 1 to Array.length Sys.argv -1 do
-    let trs = read_file Sys.argv.(i) in
+  let start = if Sys.argv.(1) = "-w" then 2 else 1 in
+  for i = start to Array.length Sys.argv -1 do
+    let trs =
+      if Sys.argv.(1) = "-w" then
+        Trs_parse.rules Trs_lex.lex (Lexing.from_string Sys.argv.(i))
+      else
+        read_file Sys.argv.(i)
+    in
+    print_string (Sys.argv.(i) ^ "\n");
+    printf "%d\n" (List.length trs);
     let deg = Homcomp.degree trs in
     let signt = Homcomp.signt_from_trs trs in
     let m2 = Homcomp.del2til trs in
@@ -16,8 +24,8 @@ let () =
       let ri1 = M.rank (Array.length m1) (Array.length m1.(0)) m1' in
       let rk1 = Array.length m1.(0) - ri1 in
       let sh2 = rk1 - Smith.num1s (Array.length m2) (Array.length m2.(0)) m2 in
-      printf "%s\ndegree = 0\n#symbol = %d, #rule = %d, #cp = %d\ns(H2) = %d, #rule-e(R) = %d\n\n"
-             Sys.argv.(i) (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) sh2 (sh2+ri1)
+      printf "degree = 0\n#symbol = %d, #rule = %d, #cp = %d\ns(H2) = %d, #rule-e(R) = %d\n\n"
+             (List.length signt) (List.length trs) (List.length (Homcomp.crit_pairs trs)) sh2 (sh2+ri1)
     else if Homcomp.is_small_prime deg then
       let module F =
         struct

@@ -8,13 +8,16 @@ let find_or_add s =
 %}
 
 %token <string> IDENT
-%token OPENPAR CLOSEPAR COMMA ARROW EOF
+%token OPENPAR CLOSEPAR COMMA ARROW COMMENT EOF
 
 %start rules term
 %type <(Homcomp.term * Homcomp.term) list> rules
 %type <Homcomp.term> term
 
 %%
+comment :
+| COMMENT                         { }
+
 term :
 | IDENT                           { Homcomp.Var (find_or_add $1) }
 | IDENT OPENPAR termlist CLOSEPAR { Homcomp.Term ($1, $3) }
@@ -30,5 +33,6 @@ rule :
 rules :
 | EOF                             { [] }
 | rule rules                      { $1 :: $2 }
+| comment rules                   { $2 }
 
 %%
