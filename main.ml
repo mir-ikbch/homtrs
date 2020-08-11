@@ -133,11 +133,11 @@ let fcore file =
 let clist =
   [ Arg.Set_string symbolR; Arg.Set_string baseR; Arg.String fcore ]
 
-let speclist =
-  [ ("-w", Arg.String wcore, "TRS");
-    ("-c", Arg.Tuple clist, "For theories with commutative laws");
-    ("-d1", Arg.Set d1flag, "Show the matrix D1");
-    ("-d2", Arg.Set d2flag, "Show the matrix D2")]
+let speclist = Arg.align
+  [ ("-w", Arg.String wcore, " TRS");
+    ("-c", Arg.Tuple clist, " For theories with commutative laws");
+    ("-d1", Arg.Set d1flag, " Show the matrix D1");
+    ("-d2", Arg.Set d2flag, " Show the matrix D2")]
 
 
 let () =
