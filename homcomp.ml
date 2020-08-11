@@ -1,4 +1,5 @@
 open Util
+open Printf
 
 type var = int
 
@@ -174,6 +175,31 @@ let bc_mul (ctx1,t1) (ctx2,t2) =
 let subst_bctx t (ctx,sbt) =
   subst (subst_ctx ctx t) sbt
 
+let match_const a c =
+  a = "0" && c.[0] = '0' || a = c
+
+let gt_base base c d =
+  if c.[0] = '0' && d.[0] = '0' then
+    int_of_string c > int_of_string d
+  else
+    let rec aux flag = function
+      | a::l -> if match_const a c then aux true l else if match_const a d then flag else aux flag l
+      | [] -> false
+    in
+    aux false base
+
+let rec gt_lpo base s t =
+  match s, t with
+  | Term (c, ss), Term (d,ts) -> 
+      List.exists (fun si -> si = t || gt_lpo base si t) ss
+      || (gt_base base c d && List.for_all (fun ti -> gt_lpo base s ti) ts)
+      || (c = d && gt_lex_lpo base ss ts && List.for_all (fun ti -> gt_lpo base s ti) ts)
+  | _, _ -> false
+and gt_lex_lpo base ss ts =
+  match ss, ts with
+  | [], [] -> false
+  | si::ss', ti::ts' -> if gt_lpo base si ti then true else si = ti && gt_lex_lpo base ss' ts'
+
 (* computing critical pairs *)
 
 let overlap sbt (l, r) (t, s) =
@@ -272,6 +298,25 @@ let reduce t rules =
 let rewrite t rules =
   fst (reduce t rules)
 
+let ordered_reduce base t rules identities =
+  let rules' = List.rev_append (List.rev_map (fun r -> (r,true)) rules) (List.rev_map (fun r -> (r,false)) identities) in
+  let vs = var_set t in
+  let m = maxid t in
+  let rec aux s accum = function
+    | [] -> (s, accum)
+    | ((u,v),isordered)::rest ->
+        let u' = rename m u in
+        let v' = rename m v in
+        let ovlps = overlap_to_subterms ~freez:vs (u',v') (s,s) in
+        match List.find_opt (fun (snew,_,_,_) -> isordered || gt_lpo base s snew) ovlps with
+        | None -> aux s accum rest
+        | Some (snew,_,pnew,_) -> aux snew (pnew::accum) rules'
+  in
+  aux t [] rules'
+
+let ordered_rewrite base t rules identities =
+  fst (ordered_reduce base t rules identities)
+
 module FM = FreeModule
 
 module Z = struct
@@ -341,6 +386,20 @@ let del2 trs ((ctx1,(l1,r1),sbt1),(ctx2,(l2,r2),sbt2)) =
         (M.sub (del2' trs (subst_bctx r2 (ctx2,sbt2)))
                (del2' trs (subst_bctx r1 (ctx1,sbt1))))
 
+let rec subst_const = function
+  | Var i -> Term ("0"^string_of_int i, [])
+  | Term (c,ts) -> Term (c, List.map subst_const ts)
+
+let del2'_ordered base rules idents t =
+  let t' = subst_const t in
+  let (_,rs) = ordered_reduce base t' rules idents in
+  List.map (fun (ctx,rule,sbt) -> ([1,(ctx,sbt)],rule)) rs
+
+let del2_ordered base rules idents ((ctx1,(l1,r1),sbt1),(ctx2,(l2,r2),sbt2)) =
+  M.add (M.add [([1,(ctx2,sbt2)], (l2,r2))] [([-1,(ctx1,sbt1)], (l1,r1))])
+        (M.sub (del2'_ordered base rules idents (subst_bctx r2 (ctx2,sbt2)))
+               (del2'_ordered base rules idents (subst_bctx r1 (ctx1,sbt1))))
+
 let matrix_init row col f =
   Array.init row (fun i ->
     Array.init col (fun j ->
@@ -348,7 +407,7 @@ let matrix_init row col f =
     )
   )
 
-let sum_coeff trs =
+let sum_coeff =
   List.fold_left (fun accum (k,(ctx,_)) ->
     k + accum
   ) 0
@@ -356,7 +415,7 @@ let sum_coeff trs =
 let del0til trs signt =
   matrix_init 1 (List.length signt) (fun _ j ->
     let xs = del0 (List.nth signt j) in
-    sum_coeff trs xs
+    sum_coeff xs
   )
 
 let del1til trs signt =
@@ -366,7 +425,7 @@ let del1til trs signt =
       | [] -> 0
       | (coeffs,c)::rest ->
           if List.nth signt i = c then
-            sum_coeff trs coeffs
+            sum_coeff coeffs
           else
             aux rest
     in
@@ -382,12 +441,35 @@ let del2til trs =
       | [] -> 0
       | (coeffs,(l,_))::rest ->
           if teq l (fst (List.nth trs i)) then
-            sum_coeff trs coeffs + aux rest
+            sum_coeff coeffs + aux rest
           else
             aux rest
     in
     aux xs
   )
+
+let del2til_ordered base rules idents =
+  let rs = List.rev_append rules idents in
+  let cps = crit_pairs rs in
+  matrix_init (List.length rs) (List.length cps + List.length idents) (fun i j ->
+    if j >= List.length cps then
+      if i - List.length rs = j - List.length cps then 2 else 0
+    else
+      let (_,_,p,q) = List.nth cps j in
+      let xs = del2_ordered base rules idents (p,q) in
+      let rec aux = function
+        | [] -> 0
+        | (coeffs,(l,_))::rest ->
+            if teq l (fst (List.nth rs i)) then
+              sum_coeff coeffs + aux rest
+            else
+              aux rest
+      in
+      aux xs
+  )
+
+let print_matrix m =
+  Array.iter (fun l -> Array.iter (fun a -> if a < 0 then printf "%d " a else printf " %d " a) l; print_string "\n") m
 
 (*
 let rki0 trs signt =
