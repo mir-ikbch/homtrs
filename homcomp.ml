@@ -26,6 +26,20 @@ let rec with_comma = function
 
 let pp_t t = print_string (pt t)
 
+let rec latex = function
+  | Var x ->
+      if x = -1 then
+        "\\square"
+      else
+        " x_{" ^ string_of_int x ^ "}"
+  | Term (c, ts) ->
+      match ts with
+      | [] -> c
+      | _ -> c ^ "(" ^ latex_with_comma ts ^ ")"
+and latex_with_comma = function
+  | [t] -> latex t
+  | t::ts -> latex t ^ ", " ^ latex_with_comma ts
+
 module IntSet = Set.Make(
   struct
     let compare = Pervasives.compare
@@ -165,7 +179,7 @@ let teq t1 t2 =
 
 let sq = Var (-1)
 
-let subst_ctx t s = subst1 t (-1, s)
+let subst_ctx ctx s = subst1 ctx (-1, s)
 
 type bicontext = term * substitution
 
@@ -294,6 +308,23 @@ let reduce t rules =
         | (snew,_,pnew,_)::_ -> aux snew (pnew::accum) rules
   in
   aux t [] rules
+
+let normalize t trs_array =
+  let vs = var_set t in
+  let m = maxid t in
+  let rec aux s accum i =
+    if i >= Array.length trs_array then
+      (s,accum)
+    else
+      let (l,r) = trs_array.(i) in
+      let l' = rename m l in
+      let r' = rename m r in
+      let ovlps = overlap_to_subterms ~freez:vs (l',r') (s,s) in
+      match ovlps with
+      | [] -> aux s accum (i+1)
+      | (snew,_,(ctx,_,sb),_)::_ -> aux snew ((ctx,i,sb)::accum) 0
+  in
+  aux t [] 0
 
 let rewrite t rules =
   fst (reduce t rules)
@@ -432,6 +463,34 @@ let del1til trs signt =
     aux xs
   )
 
+let double_hat trs_array t =
+  let (_,rs) = normalize t trs_array in
+  let v = Array.make (Array.length trs_array) 0 in
+  List.iter (fun (_,i,_) -> v.(i) <- v.(i) + 1) rs;
+  v
+
+let cps_idx cps trs_array =
+  let n = Array.length trs_array in
+  List.rev_map (fun (a,b,(ctx1,(l1,r1),sb1),(ctx2,(l2,r2),sb2)) ->
+    (List.find (fun i -> teq (fst trs_array.(i)) l1) (seq 0 n), List.find (fun i -> teq (fst trs_array.(i)) l2) (seq 0 n), subst_bctx r1 (ctx1,sb1), subst_bctx r2 (ctx2,sb2))
+  ) cps
+ 
+let del2til trs =
+  let cps = prime_crit_pairs trs in
+  let trs_array = Array.of_list trs in
+  let cps_id = cps_idx cps trs_array in
+  let m = Array.make_matrix (Array.length trs_array) (List.length cps) 0 in
+  List.iteri (fun j (i1,i2,t1,t2) ->
+    let (_,rs1) = normalize t1 trs_array in
+    let (_,rs2) = normalize t2 trs_array in
+    List.iter (fun (_,i,_) -> m.(i).(j) <- m.(i).(j) + 1) rs2;
+    List.iter (fun (_,i,_) -> m.(i).(j) <- m.(i).(j) - 1) rs1;
+    m.(i2).(j) <- m.(i2).(j) + 1;
+    m.(i1).(j) <- m.(i1).(j) - 1
+  ) cps_id;
+  m
+
+ (*
 let del2til trs =
   let cps = prime_crit_pairs trs in
   matrix_init (List.length trs) (List.length cps) (fun i j ->
@@ -447,6 +506,18 @@ let del2til trs =
     in
     aux xs
   )
+*)
+
+let transfer trs eqs =
+  let trs_array = Array.of_list trs in
+  let m = Array.make_matrix (Array.length trs_array) (List.length eqs) 0 in
+  List.iteri (fun j (t,s) ->
+    let (_,rs1) = normalize t trs_array in
+    let (_,rs2) = normalize s trs_array in
+    List.iter (fun (_,i,_) -> m.(i).(j) <- m.(i).(j) + 1) rs1;
+    List.iter (fun (_,i,_) -> m.(i).(j) <- m.(i).(j) - 1) rs2;
+  ) eqs;
+  m
 
 let del2til_ordered base rules idents =
   let rs = List.rev_append rules idents in
@@ -470,6 +541,70 @@ let del2til_ordered base rules idents =
 
 let print_matrix m =
   Array.iter (fun l -> Array.iter (fun a -> if a < 0 then printf "%d " a else printf " %d " a) l; print_string "\n") m
+
+let rec rule_to_name (l,r) trs names =
+  match trs, names with
+  | (l',r')::trs', name::names' ->
+      if teq l l' then
+        name
+      else
+        rule_to_name (l,r) trs' names'
+
+let sp_name = ["F_1"; "G_1"; "G_2"; "G_3"; "G_4"]
+
+let rule_to_name_sp rule trs = rule_to_name rule trs sp_name
+
+(*
+let rec latex_diagrams1' trs str paths row i mx = function
+  | [] -> (str ^ "\\\\\n", paths ^ "\n")
+  | (ctx,(l,r),sbt)::rest ->
+    let r' = subst r sbt in
+    let str' = 
+      if rest = [] && row = 2 then
+        str
+      else
+        str ^ Printf.sprintf " & %s" (latex (subst_ctx ctx r'))
+    in
+    let name = rule_to_name_sp (l,r) trs in
+    let paths' = paths ^
+      if rest = [] && row = 2 then
+        Printf.sprintf "(m-%d-%d) edge node[auto] {$%s$} (m-%d-%d)\n" row i name 1 mx 
+      else
+        Printf.sprintf "(m-%d-%d) edge node[auto] {$%s$} (m-%d-%d)\n" row i name row (i+1)
+    in
+    latex_diagrams1' trs str' paths' row (i+1) mx rest
+
+let latex_diagrams1 trs (r',s',(ctx,(l,r),sbt),(_,(t,s),_)) =
+  let p1 = snd (reduce r' trs) in
+  let p2 = snd (reduce s' trs) in
+  let fl = List.length p1 >= List.length p2 in
+  let (q1,q2) = if fl then (p1,p2) else (p2,p1) in
+  let len = List.length q1 +2 in
+  let str =
+    Printf.sprintf "%s & %s" (latex (subst t sbt))  (if fl then latex r' else latex s')
+  in
+  let paths =
+    Printf.sprintf "(m-1-1) edge node[auto] {$%s$} (m-1-2)\n" (rule_to_name_sp (if fl then (l,r) else (t,s)) trs)
+  in
+  let (str', paths') = latex_diagrams1' trs str paths 1 2 len (List.rev q1) in
+  let str'' = str' ^ Printf.sprintf "& %s" (if fl then latex s' else latex r') in
+  let paths'' = paths' ^
+    Printf.sprintf "(m-1-1) edge node[auto] {$%s$} (m-2-2)\n" (rule_to_name_sp (if fl then (t,s) else (l,r)) trs)
+  in
+  let (fin_str, fin_paths) = latex_diagrams1' trs str'' paths'' 2 2 len (List.rev q2) in
+  Printf.sprintf "\\begin{tikzpicture}\n\\matrix(m)[matrix of math nodes, row sep=2.6em, column sep=2.0em,font=\small]\n{%s};\n\\path[->,font=\\scriptsize]\n%s;\n\\end{tikzpicture}" fin_str fin_paths
+
+let latex_diagrams trs =
+  let cps = crit_pairs trs in
+  String.concat "\n" (List.map (latex_diagrams1 trs) cps)
+*)
+(*
+let latex_diagrams trs =
+  let cps = crit_pairs trs in
+  List.fold_left (fun str (r',s',(ctx,(l,r),sbt),(_,(t,s),sbt')) ->
+    str ^ " " ^ latex (subst_ctx r' ctx) ^ "\\xleftarrow{" ^ rule_to_name_sp (l,r) trs ^ "} " ^ latex (subst t sbt') ^ "\\xrightarrow{" ^ rule_to_name_sp (t,s) trs ^ "} " ^ latex s' ^ "\\\\\n")
+  "" cps
+  *)
 
 (*
 let rki0 trs signt =

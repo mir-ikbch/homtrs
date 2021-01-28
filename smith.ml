@@ -44,7 +44,7 @@ let reduction n m a =
           if a.(j).(j) = 0 && a.(i).(j) <> 0 then
             swap a j i
         done;
-        if j < n - 1 then begin
+        if j <= n - 1 then begin
           for j' = j + 1 to m - 1 do
             eucl' a j j' j;
             if a.(j).(j) = 0 && a.(j).(j') <> 0 then
