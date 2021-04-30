@@ -19,10 +19,12 @@ let rec pt = function
 and with_space = function
   | [t] -> pt t
   | t::ts -> pt t ^ " " ^ with_space ts
+  | _ -> assert false
 
 let rec with_comma = function
   | [t] -> pt t
   | t::ts -> pt t ^ ", " ^ with_comma ts
+  | _ -> assert false
 
 let pp_t t = print_string (pt t)
 
@@ -39,6 +41,7 @@ let rec latex = function
 and latex_with_comma = function
   | [t] -> latex t
   | t::ts -> latex t ^ ", " ^ latex_with_comma ts
+  | _ -> assert false
 
 module IntSet = Set.Make(
   struct
@@ -213,6 +216,7 @@ and gt_lex_lpo base ss ts =
   match ss, ts with
   | [], [] -> false
   | si::ss', ti::ts' -> if gt_lpo base si ti then true else si = ti && gt_lex_lpo base ss' ts'
+  | _,_ -> assert false
 
 (* computing critical pairs *)
 
@@ -542,69 +546,6 @@ let del2til_ordered base rules idents =
 let print_matrix m =
   Array.iter (fun l -> Array.iter (fun a -> if a < 0 then printf "%d " a else printf " %d " a) l; print_string "\n") m
 
-let rec rule_to_name (l,r) trs names =
-  match trs, names with
-  | (l',r')::trs', name::names' ->
-      if teq l l' then
-        name
-      else
-        rule_to_name (l,r) trs' names'
-
-let sp_name = ["F_1"; "G_1"; "G_2"; "G_3"; "G_4"]
-
-let rule_to_name_sp rule trs = rule_to_name rule trs sp_name
-
-(*
-let rec latex_diagrams1' trs str paths row i mx = function
-  | [] -> (str ^ "\\\\\n", paths ^ "\n")
-  | (ctx,(l,r),sbt)::rest ->
-    let r' = subst r sbt in
-    let str' = 
-      if rest = [] && row = 2 then
-        str
-      else
-        str ^ Printf.sprintf " & %s" (latex (subst_ctx ctx r'))
-    in
-    let name = rule_to_name_sp (l,r) trs in
-    let paths' = paths ^
-      if rest = [] && row = 2 then
-        Printf.sprintf "(m-%d-%d) edge node[auto] {$%s$} (m-%d-%d)\n" row i name 1 mx 
-      else
-        Printf.sprintf "(m-%d-%d) edge node[auto] {$%s$} (m-%d-%d)\n" row i name row (i+1)
-    in
-    latex_diagrams1' trs str' paths' row (i+1) mx rest
-
-let latex_diagrams1 trs (r',s',(ctx,(l,r),sbt),(_,(t,s),_)) =
-  let p1 = snd (reduce r' trs) in
-  let p2 = snd (reduce s' trs) in
-  let fl = List.length p1 >= List.length p2 in
-  let (q1,q2) = if fl then (p1,p2) else (p2,p1) in
-  let len = List.length q1 +2 in
-  let str =
-    Printf.sprintf "%s & %s" (latex (subst t sbt))  (if fl then latex r' else latex s')
-  in
-  let paths =
-    Printf.sprintf "(m-1-1) edge node[auto] {$%s$} (m-1-2)\n" (rule_to_name_sp (if fl then (l,r) else (t,s)) trs)
-  in
-  let (str', paths') = latex_diagrams1' trs str paths 1 2 len (List.rev q1) in
-  let str'' = str' ^ Printf.sprintf "& %s" (if fl then latex s' else latex r') in
-  let paths'' = paths' ^
-    Printf.sprintf "(m-1-1) edge node[auto] {$%s$} (m-2-2)\n" (rule_to_name_sp (if fl then (t,s) else (l,r)) trs)
-  in
-  let (fin_str, fin_paths) = latex_diagrams1' trs str'' paths'' 2 2 len (List.rev q2) in
-  Printf.sprintf "\\begin{tikzpicture}\n\\matrix(m)[matrix of math nodes, row sep=2.6em, column sep=2.0em,font=\small]\n{%s};\n\\path[->,font=\\scriptsize]\n%s;\n\\end{tikzpicture}" fin_str fin_paths
-
-let latex_diagrams trs =
-  let cps = crit_pairs trs in
-  String.concat "\n" (List.map (latex_diagrams1 trs) cps)
-*)
-(*
-let latex_diagrams trs =
-  let cps = crit_pairs trs in
-  List.fold_left (fun str (r',s',(ctx,(l,r),sbt),(_,(t,s),sbt')) ->
-    str ^ " " ^ latex (subst_ctx r' ctx) ^ "\\xleftarrow{" ^ rule_to_name_sp (l,r) trs ^ "} " ^ latex (subst t sbt') ^ "\\xrightarrow{" ^ rule_to_name_sp (t,s) trs ^ "} " ^ latex s' ^ "\\\\\n")
-  "" cps
-  *)
 
 (*
 let rki0 trs signt =
