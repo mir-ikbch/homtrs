@@ -3,11 +3,11 @@ open Trs_parse
 
 }
 
-let ident = ((_ # [' ' '\t' '\n' '(' ')' ',' '-' '#']) | ("-" (_ # [' ' '\t' '\n' '(' ')' ',' '>'])) | "-")*
+let ident = ((_ # [' ' '\t' '\n' '\r' '(' ')' ',' '-' '#']) | ("-" (_ # [' ' '\t' '\n' '\r' '(' ')' ',' '>'])) | "-")*
 let comment = '#' ((_ # ['\n'])*) ('\n' | eof)
 
 rule lex = parse
-| [' ' '\t' '\n'] { lex lexbuf }
+| [' ' '\t' '\n' '\r'] { lex lexbuf }
 | "("             { OPENPAR }
 | ")"             { CLOSEPAR }
 | ","             { COMMA }
